@@ -1,0 +1,11 @@
+CACHE MANIFEST
+
+CACHE:
+# JS asdf
+static/js/bootstrap.min.js
+static/js/jquery.js
+static/js/mobile.js
+
+# Styles
+static/css/bootstrap.css
+static/css/template.css

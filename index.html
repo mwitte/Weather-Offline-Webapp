@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
-<html lang="en" manifest="offline.appcache">
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-	<link rel="apple-touch-icon" href="static/img/icon-76.png" />
-	<link rel="apple-touch-icon" sizes="76x76" href="static/img/icon-120.png" />
-	<link rel="apple-touch-icon" sizes="120x120" href="static/img/icon-120.png" />
-	<link rel="apple-touch-icon" sizes="152x152" href="static/img/icon-152.png" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon" href="static/img/icon-76.png"/>
+	<link rel="apple-touch-icon" sizes="76x76" href="static/img/icon-120.png"/>
+	<link rel="apple-touch-icon" sizes="120x120" href="static/img/icon-120.png"/>
+	<link rel="apple-touch-icon" sizes="152x152" href="static/img/icon-152.png"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
 	<!-- iPhone -->
 	<link rel="apple-touch-startup-image"
@@ -24,52 +25,73 @@
          and (-webkit-device-pixel-ratio: 2)"
 		  href="static/img/startup-640x920.png">
 
-    <title>Starter Template for Bootstrap</title>
+	<title>Starter Template for Bootstrap</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="static/css/bootstrap.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-	<link href="static/css/template.css" rel="stylesheet">
+	<!-- styles -->
+	<link href="static/css/styles.css" rel="stylesheet">
 
 
 </head>
 
-  <body style="">
+<body style="">
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="#"><span class="label label-success">Online</span> Weather</a>
+	</div>
 
-    <div class="container">
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse navbar-ex1-collapse">
+		<ul class="nav navbar-nav">
+			<li class="active"><a href="#">Local</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+		</ul>
+	</div><!-- /.navbar-collapse -->
+</nav>
 
-      <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-		<p>ey</p>
-      </div>
+<div class="container">
+	<div class="content">
+		<div class="currentLocation">
+			<h1>loading</h1>
+			<div class="row current">
+				<div class="col-xs-6">
+					<span class="conditions icon" data-icon=""></span>
+				</div>
+				<div class="col-xs-6">
+					<span class="temperature icona" data-icon="*"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="debug">
+		<form class="form-horizontal" role="form">
+			<div class="form-group">
+				<label for="log" class="col-lg-2 control-label">Log</label>
+				<div class="col-lg-10">
+					<textarea class="form-control" id="log" rows="8"></textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- /.container -->
 
-    </div><!-- /.container -->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/js/jquery.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/mobile.js"></script>
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="static/js/jquery.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
-  
-
-</body></html>
+</body>
+</html>

@@ -32,23 +32,25 @@ span.icona:after {
 span.temperature {
 	font-size: 50px;
 }
-.current {
-	text-align: center;
-}
-.currentLocation {
-	display: none;
-}
-
-.content{
-	min-height: 300px;
-}
 
 body {
 	padding-top: 50px;
+	.container {
+		margin: 0 auto;
+		h1{
+			text-align: center;
+		}
+		.content{
+
+		}
+		.content{
+			.currentLocation {
+				display: none;
+				.current {
+					text-align: center;
+				}
+			}
+		}
+	}
 }
-.container {
-	margin: 0 auto;
-}
-.container h1{
-	text-align: center;
-}
+

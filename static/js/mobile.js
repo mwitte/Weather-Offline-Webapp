@@ -1,5 +1,8 @@
 $(document).ready(function(){
-	Location.getLocation();
+	Navigation.init();
+	if(!Weather.Dom.showCurrent()){
+		Location.getLocation();
+	}
 });
 
 var IconMapping = new Array();
@@ -14,32 +17,90 @@ IconMapping["cloud"] = "Y";
 IconMapping["extreme"] = "F";
 
 
+var U = {
+	log: function(text){
+		$('#log').prepend(text +'\n');
+	}
+}
 
-
+var Navigation = {
+	bindEvents: function(){
+		$('.container .content').children().hide().first().show();;
+		$('.navbar .nav a').click(function(){
+			var clicked = this;
+			$('.navbar .nav li').removeClass('active');
+			$(clicked).parent('li').addClass('active');
+			$('.container .content').children().fadeOut(300);
+			$('.container .content div.' + $(clicked).attr('data-content')).delay(300).fadeIn(300);
+			$('.navbar-collapse').removeClass('in').addClass('collapse');
+			return true;
+		});
+	},
+	init: function(){
+		Navigation.bindEvents();
+	}
+}
 
 var Weather = {
 	value: null,
-
+	/**
+	 * in seconds
+	 */
+	expire: 10,
 	currentLocation: function(apiData){
+		var dataSet = Storage.restore('currentLocation');
+		if(dataSet){
+			Weather.Dom.showCurrent(dataSet);
+			if(dataSet.created >= new Date().getTime() - 1000 * Weather.expire){
+				U.log('Lifetime: ' + ((1000 * Weather.expire - (new Date().getTime() - dataSet.created)) / 1000).toString());
+				return;
+			}
+			U.log('Lifetime expired');
+		}
 		if(!apiData){
-			Weather.Api.currentByCoordinates(Location.latitude, Location.longitude);
+			Weather.Api.currentByCoordinates(Location.position.latitude, Location.position.longitude);
 		}else{
 			U.log('Location based api data: ' + apiData.main.temp + ' °C  ' + apiData.name + ', ' + apiData.sys.country);
 			Weather.value = apiData;
 
 
 			var dataSet = Weather.DataSetFactory.fromCurrent(apiData);
+			Storage.store('currentLocation', dataSet);
 			Weather.Dom.showCurrent(dataSet);
 		}
 	},
 
 	Dom: {
 		showCurrent: function(dataSet){
-			// fill frontend
-			$('.currentLocation h1').html(dataSet.city + ', ' + dataSet.country);
-			$('.currentLocation .temperature').html(Math.round(dataSet.temperature));
-			$('.currentLocation .conditions').attr('data-icon', IconMapping[dataSet.conditions]);
-			$('.currentLocation').fadeIn('slow');
+			if(!dataSet){
+				var dataSet = Storage.restore('currentLocation');
+			}
+			if(dataSet){
+				// fill frontend
+				$('.currentLocation h1').html(dataSet.city + ', ' + dataSet.country);
+				$('.currentLocation .temperature').html(Math.round(dataSet.temperature));
+				$('.currentLocation .conditions').attr('data-icon', IconMapping[dataSet.conditions]);
+				$('.currentLocation').fadeIn('slow');
+				if(dataSet.created >= new Date().getTime() - 1000 * Weather.expire){
+					return true;
+				}
+			}
+			return false;
+		},
+		onlineState: function(state){
+			$('.onlineState').removeClass('label-danger label-warning label-success');
+			switch(state){
+				//
+				case 0:
+					$('.onlineState').html('offline').addClass('label-danger');
+					break;
+				case 1:
+					$('.onlineState').html('online').addClass('label-success');
+					break;
+				default:
+					$('.onlineState').html('unknown').addClass('label-warning');
+					break;
+			}
 		}
 	},
 
@@ -49,6 +110,7 @@ var Weather = {
 	DataSetFactory: {
 		fromCurrent: function(data){
 			var dataSet = {
+				created: new Date().getTime(),
 				city: data.name,
 				country: data.sys.country,
 				timestamp: data.dt,
@@ -80,7 +142,6 @@ var Weather = {
 						}else{
 							dataSet.conditions = 'cloud';
 						}
-
 						break;
 					case '9':
 						dataSet.conditions = 'extreme';
@@ -96,26 +157,54 @@ var Weather = {
 	 * API to the weather service
 	 */
 	Api: {
+		success: false,
 		currentByCoordinates: function(latitude, longitude){
 			var url = document.location.protocol + "//api.openweathermap.org/data/2.5/weather?callback=?&units=metric&lat=" + latitude +"&lon=" + longitude;
 			U.log('Calling currentByCoordinates by url: ' + url);
+			Weather.Dom.onlineState(-1);
 			$.getJSON(url, function(response){
 				Weather.currentLocation(response);
+				Weather.Api.success = true;
+				Weather.Dom.onlineState(1);
 			});
-
+			// error handling for jsonp
+			setTimeout(function() {
+				if (!Weather.Api.success){
+					Weather.Dom.onlineState(0);
+				}}, 5 * 1000);
 		}
 	}
 }
 
-var U = {
-	log: function(text){
-		$('#log').prepend(text +'\n');
+/**
+ * Wrapper for localStorage
+ * @type {{store: Function, restore: Function, clear: Function}}
+ */
+var Storage = {
+	store: function (key, data){
+		U.log('Storing with key "'+ key + '": ' + JSON.stringify(data));
+		localStorage[key] = JSON.stringify(data);
+	},
+	restore: function(key){
+
+		if(localStorage[key]){
+			U.log('Restoring with key "'+ key + '": ' + localStorage[key]);
+			return JSON.parse(localStorage[key]);
+		}else{
+			U.log('Failed restoring with key "'+ key + '"');
+		}
+	},
+	clear: function (){
+		U.log('Clearing storage');
+		localStorage.clear();
 	}
 }
 
 var Location = {
-	latitude: null,
-	longitude: null,
+	position: {
+		latitude: null,
+		longitude: null
+	},
 
 	getLocation: function(){
 		if (navigator.geolocation) {
@@ -123,12 +212,13 @@ var Location = {
 		}
 		else{
 			// @TODO
-			console.log("Your browser does not support Geolocation!");
+			U.log("Your browser does not support Geolocation!");
 		}
 	},
 	success: function(position){
-		Location.latitude = position.coords.latitude;
-		Location.longitude = position.coords.longitude;
+		Location.position.latitude = position.coords.latitude;
+		Location.position.longitude = position.coords.longitude;
+		Storage.store('lastLocation', Location.position);
 		U.log('Located device at (lat / lon) ' + position.coords.latitude + ' / ' + position.coords.longitude);
 		Weather.currentLocation();
 	},
@@ -147,30 +237,9 @@ var Location = {
 				U.log('An unknown error occured!');
 				break;
 		}
+		if(Storage.restore('lastLocation')){
+			Location.position = Storage.restore('lastLocation');
+			Weather.currentLocation();
+		}
 	}
 }
-
-	/*
-	$.ajax({
-		url: document.location.protocol + '//api.openweathermap.org/data/2.5/weather?callback=myjsonpfunction&q=' + encodeURIComponent(url),
-		dataType: 'json',
-		async:'true',
-		type:"GET",
-		success: function(data) {
-			console.log("success");
-		}
-	});
-*/
-/*
-	var url = document.location.protocol + '//api.openweathermap.org/data/2.5/weather?callback=?&q=' + encodeURIComponent("Rosenheim,de");
-
-	$.getJSON(url, function(response){
-
-		console.log(response);
-	});
-
-function myjsonpfunction(data){
-
-	console.log(data.responseData.results);
-}
-*/

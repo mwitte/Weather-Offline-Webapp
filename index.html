@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
-<html lang="en">
+<html lang="en" manifest="cache.appcache">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
@@ -25,7 +25,7 @@
          and (-webkit-device-pixel-ratio: 2)"
 		  href="static/img/startup-640x920.png">
 
-	<title>Starter Template for Bootstrap</title>
+	<title>Weather</title>
 
 	<!-- styles -->
 	<link href="static/css/styles.css" rel="stylesheet">
@@ -44,15 +44,17 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="#"><span class="label label-success">Online</span> Weather</a>
+		<a class="navbar-brand" href="#"><span class="label label-success onlineState">Online</span> Weather</a>
 	</div>
 
 	<!-- Collect the nav links, forms, and other content for toggling -->
 	<div class="collapse navbar-collapse navbar-ex1-collapse">
 		<ul class="nav navbar-nav">
-			<li class="active"><a href="#">Local</a></li>
+			<li class="active"><a href="#" data-content="currentLocation">Home</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
+			<li><a href="#" data-content="debug">Debug</a></li>
+			<li><a href="#" data-content="info">Info</a></li>
 		</ul>
 	</div><!-- /.navbar-collapse -->
 </nav>
@@ -70,17 +72,37 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="debug">
-		<form class="form-horizontal" role="form">
-			<div class="form-group">
-				<label for="log" class="col-lg-2 control-label">Log</label>
-				<div class="col-lg-10">
-					<textarea class="form-control" id="log" rows="8"></textarea>
+		<div class="info">
+			<h1>Info</h1>
+			<div class="row current">
+				<div class="well">
+					This was a simple project to test the browser application cache and the web storage api. This
+					webapp can run offline. For e. g. you are able to add this webapp "to the homescreen" on iOS devices
+					and run it fully offline.<br/><br/>
+					Matthias Witte (<a href="http://www.matthias-witte.net">matthias-witte.net</a>)
 				</div>
 			</div>
-		</form>
+			<h2>
+				Thanks to..
+			</h2>
+			<div class="well">
+				Alessio Atzeni(http://www.alessioatzeni.com) for this nice font<br/>
+				Twitter for Bootstrap
+			</div>
+		</div>
+		<div class="debug">
+			<h1>Debug</h1>
+			<form class="form-horizontal" role="form">
+				<div class="form-group">
+					<label for="log" class="col-lg-2 control-label">Log</label>
+					<div class="col-lg-10">
+						<textarea class="form-control" id="log" rows="8"></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
+	<!-- /.content -->
 </div>
 <!-- /.container -->
 

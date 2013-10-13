@@ -35,20 +35,29 @@ span.temperature {
 }
 
 body {
+
+	span.spinner {
+		background-image: url('../../static/img/ajax-loader.gif');
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+	}
 	padding-top: 50px;
 	.container {
 		margin: 0 auto;
 		h1{
 			text-align: center;
 		}
-		.content{
-
+		.loading{
+			text-align: center;
 		}
 		.content{
 			.currentLocation {
-				display: none;
-				.current {
-					text-align: center;
+				.weather{
+					display: none;
+					.current {
+						text-align: center;
+					}
 				}
 			}
 		}
@@ -56,6 +65,12 @@ body {
 			text-align: center;
 		}
 		.state {
+			text-align: center;
+			.stateLabel{
+				display: none;
+			}
+		}
+		.update{
 			text-align: center;
 		}
 	}

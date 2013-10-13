@@ -61,35 +61,46 @@
 <div class="container">
 	<div class="content">
 		<div class="currentLocation">
-			<h1>loading</h1>
-			<div class="row current">
-				<div class="col-xs-6">
-					<span class="conditions icon" data-icon=""></span>
+			<h1>Current weather</h1>
+			<div class="weather">
+				<h1 class="city">loading</h1>
+				<div class="row current">
+					<div class="col-xs-6">
+						<span class="conditions icon" data-icon=""></span>
+					</div>
+					<div class="col-xs-6">
+						<span class="temperature icona" data-icon="*"></span>
+					</div>
 				</div>
-				<div class="col-xs-6">
-					<span class="temperature icona" data-icon="*"></span>
-				</div>
-			</div>
-			<div class="row updated">
-				<div class="col-xs-12">
-					<span class="updated"></span>
+				<div class="row updated">
+					<div class="col-xs-12">
+						<span class="updated"></span>
+					</div>
 				</div>
 			</div>
 			<div class="row state">
 				<div class="col-xs-12">
-					<span class="label label-success onlineState">Online</span>
+					<span class="label label-success stateLabel">Online</span>
+				</div>
+			</div>
+			<div class="loading">
+				<span class="spinner"></span> <br/>
+				loading
+			</div>
+			<div class="update">
+				<div class="btn-group">
+					<button type="button" class="btn btn-default">Update</button>
 				</div>
 			</div>
 		</div>
 		<div class="info">
 			<h1>Info</h1>
-			<div class="row current">
-				<div class="well">
-					This was a simple project to test the browser application cache and the web storage api. This
-					webapp can run offline. For e. g. you are able to add this webapp "to the homescreen" on iOS devices
-					and run it fully offline.<br/><br/>
-					Matthias Witte (<a href="http://www.matthias-witte.net">matthias-witte.net</a>)
-				</div>
+			<div class="well">
+				This was a simple project to test the browser application cache and the web storage api. This
+				webapp can run offline. For e. g. you are able to add this webapp "to the homescreen" on iOS devices
+				and run it fully offline.<br/><br/>
+				Matthias Witte (<a href="http://www.matthias-witte.net">matthias-witte.net</a>)<br/>
+				<a href="https://github.com/mwitte/Weather-Offline-Webapp">Github Project</a>
 			</div>
 			<h2>
 				Thanks to..

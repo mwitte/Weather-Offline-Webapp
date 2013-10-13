@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	Navigation.init();
+	Weather.Dom.onlineState(-1);
 	if(!Weather.Dom.showCurrent()){
 		Location.getLocation();
 	}
@@ -46,7 +47,7 @@ var Weather = {
 	/**
 	 * in seconds
 	 */
-	expire: 10,
+	expire: 60,
 	currentLocation: function(apiData){
 		var dataSet = Storage.restore('currentLocation');
 		if(dataSet){
@@ -80,6 +81,9 @@ var Weather = {
 				$('.currentLocation h1').html(dataSet.city + ', ' + dataSet.country);
 				$('.currentLocation .temperature').html(Math.round(dataSet.temperature));
 				$('.currentLocation .conditions').attr('data-icon', IconMapping[dataSet.conditions]);
+				var date = new Date(dataSet.created);
+				$('.currentLocation span.updated').html('Updated: <br/>' + date.toString());
+
 				$('.currentLocation').fadeIn('slow');
 				if(dataSet.created >= new Date().getTime() - 1000 * Weather.expire){
 					return true;
@@ -92,13 +96,13 @@ var Weather = {
 			switch(state){
 				//
 				case 0:
-					$('.onlineState').html('offline').addClass('label-danger');
+					$('.onlineState').html('offline').addClass('label-danger').show();
 					break;
 				case 1:
-					$('.onlineState').html('online').addClass('label-success');
+					$('.onlineState').html('online').addClass('label-success').hide();
 					break;
 				default:
-					$('.onlineState').html('unknown').addClass('label-warning');
+					$('.onlineState').html('unknown').addClass('label-warning').hide();
 					break;
 			}
 		}

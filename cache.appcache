@@ -2,8 +2,6 @@ CACHE MANIFEST
 
 CACHE:
 # JS
-static/js/bootstrap.min.js
-static/js/jquery.js
 static/js/mobile.js
 
 # Styles
@@ -14,6 +12,7 @@ static/font/meteocons-webfont.woff
 static/font/meteocons-webfont.svg
 static/font/meteocons-webfont.ttf
 static/font/meteocons-webfont.eot
+
 
 NETWORK:
 http://api.openweathermap.org/

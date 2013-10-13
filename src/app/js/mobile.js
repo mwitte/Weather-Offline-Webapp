@@ -48,6 +48,7 @@ var Weather = {
 	 * in seconds
 	 */
 	expire: 60,
+
 	currentLocation: function(apiData){
 		var dataSet = Storage.restore('currentLocation');
 		if(dataSet){

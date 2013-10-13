@@ -1,3 +1,7 @@
+
+var sourceDir = "src/";
+var buildDir = "build/";
+
 module.exports = function(grunt) {
 	grunt.initConfig({
 		concat: {
@@ -5,8 +9,12 @@ module.exports = function(grunt) {
 				separator: ';'
 			},
 			dist: {
-				src: ['app/lib/jquery.js', 'app/lib/bootstrap.min.js', 'app/js/*.js'],
-				dest: 'static/js/mobile.js'
+				src: [
+					sourceDir + 'app/lib/jquery.js',
+					sourceDir + 'app/lib/bootstrap.min.js',
+					sourceDir + 'app/js/*.js'
+				],
+				dest: buildDir + 'static/js/mobile.js'
 			}
 		},
 		sass: {
@@ -14,28 +22,45 @@ module.exports = function(grunt) {
 				options: {
 					style: 'compressed' // compressed, expanded
 				},
-				files: {
-					'static/css/styles.css': 'app/sass/main.scss' // 'destination': 'source'
-				}
+				files: [{
+					src: [sourceDir + 'app/sass/main.scss'],
+					dest: buildDir + 'static/css/styles.css'
+				}]
 			}
 		},
 		copy: {
 			main: {
 				files: [
-					{expand: true, src: ['app/font/**'], dest: 'static/font'},
-					{expand: true, src: ['app/img/**'], dest: 'static/img'}
+					{expand: true, cwd: sourceDir + 'app/', src: ['font/**'], dest: buildDir + 'static'},
+					{expand: true, cwd: sourceDir + 'app/', src: ['img/**'], dest: buildDir + 'static'},
+					{expand: true, cwd: sourceDir, src: ['*'], dest: buildDir, filter: 'isFile'}
 				]
+			}
+		},
+		watch: {
+			scripts: {
+				files: [ sourceDir + '**/*'], // all files in src dir
+				tasks: ['build'],
+				options: {
+					debounceDelay: 250
+				}
 			}
 		}
 	});
 
+
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', [
+	grunt.registerTask('build', [
 		'concat',
 		'sass',
 		'copy'
+	]);
+
+	grunt.registerTask('default', [
+		'build'
 	]);
 };

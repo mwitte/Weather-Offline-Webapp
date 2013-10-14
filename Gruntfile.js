@@ -42,8 +42,14 @@ module.exports = function(grunt) {
 				files: [ sourceDir + '**/*'], // all files in src dir
 				tasks: ['build'],
 				options: {
+					livereload: true,
 					debounceDelay: 250
 				}
+			}
+		},
+		open: {
+			server: {
+				path: 'http://test.local/'
 			}
 		}
 	});
@@ -53,6 +59,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-open');
 
 	grunt.registerTask('build', [
 		'concat',
@@ -61,6 +68,7 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('default', [
-		'build'
+		'build',
+		'open'
 	]);
 };

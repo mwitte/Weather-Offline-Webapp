@@ -22,6 +22,7 @@ var Location = {
 		if(successCallback){
 			Location.successCallback = successCallback;
 		}
+
 		if(errorCallback){
 			Location.errorCallback = errorCallback;
 		}
